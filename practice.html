@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript">
+
+            //初始化棋盘
+            function init()  
+            {
+                 cancan = document.getElementById("can");
+                 context = cancan.getContext("2d");
+                 context.strokeStyle = "#AAA"; 
+    
+                 for(var i = 0; i < 15; i++)
+                {
+                    for(var j = 0; j < 15; j++)    
+                    {
+                        context.strokeRect(j*40, i*40, 40, 40);
+    
+                    }    
+                }
+            }
+            
+            var maps = new Array();       
+            for(var row = 0; row < 15; row++)
+            {
+                maps[row] = new Array();
+                for(var col = 0; col < 15; col++)
+                {
+                    maps[row][col]=0;
+                }
+            }
+    
+    
+            //初始化棋子,载入图片
+            var black = new Image();
+            var white = new Image();
+            black.src = "img/black1.PNG";
+            white.src = "img/white.png";   
+    
+    
+            var cancan;
+            var context;
+            var isBlack = true;
+    
+    
+            function play(e)
+            {
+                var leftOffset = 11;               
+                var x = e.clientX - leftOffset;  
+                var y = e.clientY - 11;   
+
+                var col = parseInt((e.clientX-20 )/40)+1;
+                var row = parseInt((e.clientY-20 )/40)+1; 
+                    
+    
+                 if(isBlack)
+                 {
+                     context.drawImage(black, col*40-20, row*40-20);      
+                     isBlack = false;
+    
+                     maps[row][col] = 2;   
+                     iswin(2,row,col);
+                    // alert("aaaa");          
+                 }
+                 else
+                 {
+                     context.drawImage(white,col*40-20, row*40-20);
+                     isBlack = true;
+    
+                     maps[row][col] = 1;  
+                     iswin(1,row,col);
+                    // alert("bbbb"); 
+                 }
+    
+                 function iswin(t,row,col)
+                 {
+                    //  水平方向判断输赢 
+                     var origrow=row;
+                     var origcol=col;
+                     var total=1;
+    
+                     while(col-1>0&&maps[row][col-1]==t)
+                     {
+                        
+                         total++;   
+                         col--;    
+                     }
+                                   
+                     row=origrow;
+                     col=origcol;
+                    // total=total;
+                     while(col+1<15&&maps[row][col+1]==t)
+                     {
+                         col++;
+                         total++;                    
+                     }
+                     if(total>=5)
+                     {
+                         if(t==1)
+                         alert("白棋赢");
+                         else
+                         alert("黑棋赢");
+                     }
+                    
+                     //  垂直方向判断输赢    
+                     row=origrow;
+                     col=origcol;
+                     total=1;
+
+                     while(row-1>0&&maps[row-1][col]==t)
+                     {
+                         row--;
+                         total++;
+                     }
+                     row=origrow;
+                     col=origcol;
+                    // total=total;
+                     while(row+1<15&&maps[row+1][col]==t)
+                     {
+                         row++;
+                         total++;
+                     }
+                     if(total>=5)
+                     {
+                         if(t==1)
+                         alert("白棋赢");
+                         else
+                         alert("黑棋赢");
+                     }
+
+
+                   //  左下右上
+                     row=origrow;
+                     col=origcol;
+                     total=1;
+                     while(row+1<15&&col-1>0&&maps[row+1][col-1]==t)
+                     {
+                         row++;
+                         col--;
+                         total++;
+                     }
+                     row=origrow;
+                     col=origcol;
+                    // total=total;
+                     while(row-1>0&&col+1<15&&maps[row-1][col+1]==t)
+                     {
+                         row--;
+                         col++;
+                         total++;
+                     }
+                     if(total>=5)
+                     {
+                         if(t==1)
+                         alert("白棋赢");
+                         else
+                         alert("黑棋赢");
+                     }
+
+                     
+                     //  左上右下
+                     row=origrow;
+                     col=origcol;
+                     total=1;
+                     while(row-1>0&&col-1>0&&maps[row-1][col-1]==t)
+                     {
+                         row--;
+                         col--;
+                         total++;
+                     }
+                     row=origrow;
+                     col=origcol;
+                    // total=total;
+                     while(row+1<15&&col+1<15&&maps[row+1][col+1]==t)
+                     {
+                         row++;
+                         col++;
+                         total++;
+                     }
+                     if(total>=5)
+                     {
+                         if(t==1)
+                         alert("白棋赢");
+                         else
+                         alert("黑棋赢");
+                     }
+
+                     
+
+                    
+                     
+
+                 }
+    
+    
+            }
+            </script>   
+    </head>
+    <body onload = " init() ">      
+
+        <canvas id="can" width="600" height="600" onclick="play(event);"style="background:url(img/back.jpg);"></canvas>    
+   
+    </body>    
+</html>
